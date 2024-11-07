@@ -16,7 +16,7 @@ const doctorSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true
+        require: true
     },
     speciality: {
         type: String,
@@ -26,7 +26,7 @@ const doctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    experirence: {
+    experience: {
         type: String,
         required: true
     },
@@ -36,7 +36,7 @@ const doctorSchema = new mongoose.Schema({
     },
     available: {
         type: Boolean,
-        required: true
+        default: true
     },
     fee: {
         type: Number,
@@ -54,7 +54,7 @@ const doctorSchema = new mongoose.Schema({
         type: Object,
         default: {}
     }
-},{minimize:false});
+}, { minimize: false });
 
 
 const doctorModel = mongoose.model.doctors || mongoose.model('doctors', doctorSchema);
