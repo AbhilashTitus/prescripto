@@ -32,7 +32,7 @@ const Footer = () => {
             </div>
             <div>
                 <hr />
-                <p className='py-5 text-sm text-center'>© 2023 All Rights Reserved By ABHILASH TITUS</p>
+                <p className='py-5 text-sm text-center'>© 2024 All Rights Reserved By ABHILASH TITUS</p>
             </div>
         </div>
     )
