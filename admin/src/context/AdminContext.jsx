@@ -2,8 +2,10 @@ import { createContext, useState } from 'react';
 
 export const AdminContext = createContext();
 
-const AdminContextProvider = ({ children }) => {
-    const [aToken, setAToken] = useState('');
+const AdminContextProvider = (props) => {
+
+    const [aToken, setAToken] = useState(localStorage.getItem('aToken') ? localStorage.getItem('aToken') : '')
+
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     const value = {
@@ -14,7 +16,7 @@ const AdminContextProvider = ({ children }) => {
 
     return (
         <AdminContext.Provider value={value}>
-            {children}
+            {props.children}
         </AdminContext.Provider>
     );
 };
