@@ -59,8 +59,9 @@ const addDoctor = async (req, res) => {
         }
         // Preparing doctor data
         console.log("Preparing doctor data...");
-        let pare = JSON.parse(address)
-        console.log('pare: ', pare);
+        // Parsing address JSON string to an object
+        const addressObj = JSON.parse(address);
+        console.log('Parsed address: ', addressObj);
 
         const doctorData = {
             name,
@@ -72,9 +73,10 @@ const addDoctor = async (req, res) => {
             experience,
             about,
             fee,
-            address: JSON.parse(address),
+            address: addressObj,  
             date: Date.now()
         };
+
 
         // Saving new doctor
         console.log("Saving doctor to database...");
