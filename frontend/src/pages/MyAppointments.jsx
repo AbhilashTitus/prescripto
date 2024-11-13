@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const MyAppointments = () => {
 
-  const { backendUrl, token } = useContext(AppContext)
+  const { backendUrl, token, getDoctorsData } = useContext(AppContext)
 
   const [appointments, setAppointments] = useState([])
 
@@ -19,6 +20,25 @@ const MyAppointments = () => {
 
     } catch (error) {
       console.log(error)
+      toast.error(error.message)
+    }
+  }
+
+  const cancelAppointment = async (appointmentId) => {
+    try {
+
+      const { data } = await axios.post(backendUrl + '/api/user/cancel-appointment', { appointmentId }, { headers: { token } })
+      if (data.success) {
+        toast.success(data.message)
+        getUserAppointments()
+        getDoctorsData()
+      } else {
+        toast.error(data.message)
+      }
+
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
     }
   }
 
@@ -53,12 +73,9 @@ const MyAppointments = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2 items-center justify-center">
-              <button className="w-28 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200">
-                Pay Online
-              </button>
-              <button className="w-28 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-200">
-                Cancel
-              </button>
+              {!item.cancelled && <button className="w-28 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200">Pay Online</button>}
+              {!item.cancelled && <button onClick={() => cancelAppointment(item._id)} className="w-28 px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-200"> Cancel</button>}
+              {item.cancelled && <button className='sm:min-w-48 border border-red-600 rounded text-red-600 shadow-md'>Appointment cancelled</button>}
             </div>
           </div>
         ))}
