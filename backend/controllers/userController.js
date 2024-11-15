@@ -175,6 +175,7 @@ const bookAppointment = async (req, res) => {
             date: Date.now()
         }
 
+
         const newAppointment = new appointmentModel(appointmentData)
         await newAppointment.save()
 
