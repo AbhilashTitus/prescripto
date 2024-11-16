@@ -1,6 +1,7 @@
 import doctorModel from "../models/doctorModel.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import appointmentModel from "../models/appointmentModel.js";
 
 const changeAvailability = async (req, res) => {
     try {
@@ -64,6 +65,51 @@ const loginDoctor = async (req, res) => {
 const appointmentsDoctor = async (req, res) => {
     try {
 
+        const { docId } = req.body
+        const appointments = await appointmentModel.find({ docId })
+
+        res.json({ success: true, appointments })
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+// API to mark appointment as completed foe doctor panel
+
+const appointmentComplete = async (req, res) => {
+    try {
+
+        const { docId, appointmentId } = req.body
+
+        const appointmentData = await appointmentModel.findById(appointmentId)
+        if (appointmentData && appointmentData.docId === docId) {
+            await appointmentModel.findByIdAndUpdate(appointmentId, { isCompleted: true })
+            return res.json({ success: true, message: "Appointment marked as completed" })
+        } else {
+            return res.json({ success: false, message: "Appointment not found" })
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+// API to cancel appointment as completed foe doctor panel
+
+const appointmentCancel = async (req, res) => {
+    try {
+
+        const { docId, appointmentId } = req.body
+
+        const appointmentData = await appointmentModel.findById(appointmentId)
+        if (appointmentData && appointmentData.docId === docId) {
+            await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+            return res.json({ success: true, message: "Appointment Cancelled" })
+        } else {
+            return res.json({ success: false, message: "Cancellation Failed" })
+        }
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: error.message });
@@ -72,4 +118,4 @@ const appointmentsDoctor = async (req, res) => {
 
 
 
-export { changeAvailability, doctorList, loginDoctor }
+export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentComplete, appointmentCancel }
