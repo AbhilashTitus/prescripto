@@ -1,4 +1,3 @@
-import React from 'react'
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
 import { MdFeedback } from 'react-icons/md'
 
